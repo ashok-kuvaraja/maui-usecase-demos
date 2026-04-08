@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Primary palette -->
+    <Color x:Key="Primary">#512BD4</Color>
+    <Color x:Key="PrimaryDark">#ac99ea</Color>
+    <Color x:Key="PrimaryDarkText">#242424</Color>
+    <Color x:Key="Secondary">#DFD8F7</Color>
+    <Color x:Key="Tertiary">#2B0B98</Color>
+
+    <Color x:Key="White">#FFFFFF</Color>
+    <Color x:Key="Black">#000000</Color>
+
+    <Color x:Key="Gray100">#E1E1E1</Color>
+    <Color x:Key="Gray200">#C8C8C8</Color>
+    <Color x:Key="Gray300">#ACACAC</Color>
+    <Color x:Key="Gray400">#919191</Color>
+    <Color x:Key="Gray500">#6E6E6E</Color>
+    <Color x:Key="Gray600">#404040</Color>
+    <Color x:Key="Gray900">#212121</Color>
+
+    <!-- Convenience brushes (brushes can reference Color resources) -->
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}" />
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}" />
+    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}" />
+    <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}" />
+
+    <!-- Explicit alias tokens (use literal hex values to avoid circular references) -->
+    <Color x:Key="PrimaryColor">#512BD4</Color>
+    <Color x:Key="AccentColor">#00A3FF</Color>
+    <Color x:Key="BackgroundColor">#FFFFFF</Color>
+    <Color x:Key="ForegroundColor">#000000</Color>
+
+    <!-- Additional tokens for UI polish -->
+    <Color x:Key="SurfaceElevated">#FAFAFF</Color>
+    <Color x:Key="CardShadow">#0A000000</Color>
+    <Color x:Key="TextPrimary">#111827</Color>
+    <Color x:Key="TextSecondary">#6B7280</Color>
+    <Color x:Key="Success">#16A34A</Color>
+    <Color x:Key="Warning">#F59E0B</Color>
+    <Color x:Key="Danger">#DC2626</Color>
+
+    <!-- Status colors -->
+    <Color x:Key="StatusPending">#FFA500</Color>
+    <Color x:Key="StatusProcessing">#4169E1</Color>
+    <Color x:Key="StatusShipped">#32CD32</Color>
+    <Color x:Key="StatusCancelled">#DC143C</Color>
+
+    <!-- Brushes for status chips -->
+    <SolidColorBrush x:Key="StatusPendingBrush" Color="{StaticResource StatusPending}" />
+    <SolidColorBrush x:Key="StatusProcessingBrush" Color="{StaticResource StatusProcessing}" />
+    <SolidColorBrush x:Key="StatusShippedBrush" Color="{StaticResource StatusShipped}" />
+    <SolidColorBrush x:Key="StatusCancelledBrush" Color="{StaticResource StatusCancelled}" />
+    
+    <!-- Gradient/background brushes for premium look -->
+    <LinearGradientBrush x:Key="AppBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FFF8FF" Offset="0.0" />
+        <GradientStop Color="#F6F5FF" Offset="0.5" />
+        <GradientStop Color="#FFF8FB" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="HeaderAccentBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#6C4AE2" Offset="0.0" />
+        <GradientStop Color="#8B6CF7" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFFFF" />
+
+    <!-- Subtle shadow color as brush -->
+    <SolidColorBrush x:Key="SubtleShadowBrush" Color="#0A000000" />
+
+    <!-- Additional UI colors -->
+    <Color x:Key="SurfaceLight">#F5F5F5</Color>
+    <Color x:Key="BorderColor">#E1E1E1</Color>
+    <Color x:Key="OffBlack">#1A1A1A</Color>
+    <Color x:Key="MidnightBlue">#191970</Color>
+    <Color x:Key="SecondaryDarkText">#424242</Color>
+    <Color x:Key="Gray950">#0F0F0F</Color>
+    <Color x:Key="Magenta">#E91E63</Color>
+
+</ResourceDictionary>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ProductCatalogViewerApp.Views.ProductDetailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:ProductCatalogViewerApp.ViewModels"
+    Title="Product Details"
+    >
+
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- ── App Bar ─────────────────────────────────────────────── -->
+            <Grid
+            BackgroundColor="{AppThemeBinding Light=#6750A4, Dark=#D0BCFF}"
+            HeightRequest="56"
+            ColumnDefinitions="Auto,*"
+            Padding="4,0">
+
+                <Button
+                Grid.Column="0"
+                Text="←"
+                FontSize="20"
+                BackgroundColor="Transparent"
+                TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#371E55}"
+                Command="{Binding GoBackCommand}"
+                WidthRequest="48"
+                HeightRequest="48"
+                AutomationProperties.Name="Back to Catalog"
+                AutomationProperties.HelpText="Returns to the product list" />
+
+                <Label
+                Grid.Column="1"
+                Text="Product Details"
+                FontSize="20"
+                FontAttributes="Bold"
+                TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#371E55}"
+                VerticalOptions="Center"
+                Padding="8,0" />
+            </Grid>
+
+            <!-- ── Product Image ─────────────────────────────────────── -->
+            <Frame
+                Margin="16"
+                Padding="0"
+                CornerRadius="12"
+                BorderColor="{AppThemeBinding Light=#CAC4D0, Dark=#4A4458}"
+                HasShadow="True"
+                BackgroundColor="{AppThemeBinding Light=#F7F2FA, Dark=#2D2D31}"
+                HorizontalOptions="Fill">
+                <Image
+                    x:Name="ProductImage"
+                    Source="{Binding Product.Image}"
+                    Aspect="AspectFit"
+                    HeightRequest="300"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill"
+                    BackgroundColor="{AppThemeBinding Light=#F7F2FA, Dark=#2D2D31}">
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image" Binding="{Binding Product.Image}" Value="{x:Null}">
+                            <Setter Property="Source" Value="dotnet_bot.png" />
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
+            </Frame>
+
+            <!-- ── Product Info Card ─────────────────────────────────── -->
+            <Border
+            Margin="16"
+            Padding="16"
+            BackgroundColor="{AppThemeBinding Light=#ECE6F0, Dark=#1E1E1E}"
+            Stroke="{AppThemeBinding Light=#CAC4D0, Dark=#4A4458}"
+            StrokeShape="RoundRectangle 12">
+
+                <VerticalStackLayout Spacing="16">
+
+                    <!-- Title -->
+                    <Label
+                    Text="{Binding Product.Title}"
+                    FontSize="22"
+                    FontAttributes="Bold"
+                    TextColor="{AppThemeBinding Light=#1C1B1F, Dark=#E7E0EC}"
+                    LineBreakMode="WordWrap" />
+
+                    <!-- Category -->
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                        Text="Category"
+                        FontSize="12"
+                        FontAttributes="Bold"
+                        TextColor="{AppThemeBinding Light=#49454F, Dark=#CAC4D0}" />
+                        <Label
+                        Text="{Binding Product.Category}"
+                        FontSize="16"
+                        TextColor="{AppThemeBinding Light=#1C1B1F, Dark=#E7E0EC}" />
+                    </VerticalStackLayout>
+
+                    <!-- Price -->
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                        Text="Price"
+                        FontSize="12"
+                        FontAttributes="Bold"
+                        TextColor="{AppThemeBinding Light=#49454F, Dark=#CAC4D0}" />
+                        <Label
+                        Text="{Binding FormattedPrice}"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="{AppThemeBinding Light=#6750A4, Dark=#D0BCFF}" />
+                    </VerticalStackLayout>
+
+                    <!-- Rating -->
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                        Text="Rating"
+                        FontSize="12"
+                        FontAttributes="Bold"
+                        TextColor="{AppThemeBinding Light=#49454F, Dark=#CAC4D0}" />
+                        <Label
+                        Text="{Binding FormattedRating}"
+                        FontSize="16"
+                        TextColor="{AppThemeBinding Light=#1C1B1F, Dark=#E7E0EC}" />
+                    </VerticalStackLayout>
+
+                    <!-- Divider -->
+                    <BoxView
+                    HeightRequest="1"
+                    BackgroundColor="{AppThemeBinding Light=#CAC4D0, Dark=#4A4458}"
+                    HorizontalOptions="Fill" />
+
+                    <!-- Description -->
+                    <Label
+                    Text="{Binding DisplayDescription}"
+                    FontSize="14"
+                    TextColor="{AppThemeBinding Light=#1C1B1F, Dark=#E7E0EC}"
+                    LineBreakMode="WordWrap" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ── Back Button ────────────────────────────────────────── -->
+            <Button
+                Text="Back to Catalog"
+                FontAttributes="Bold"
+                Command="{Binding GoBackCommand}"
+                BackgroundColor="{AppThemeBinding Light=#6750A4, Dark=#D0BCFF}"
+                TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#371E55}"
+                CornerRadius="20"
+                Margin="16,8,16,24"
+                HeightRequest="48"
+                AutomationProperties.Name="Back to Catalog"
+                AutomationProperties.HelpText="Returns to product list" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+
+</ContentPage>

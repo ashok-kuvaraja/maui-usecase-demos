@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SalesOrderTracker.Views.EmptyStateView">
+    <StackLayout Padding="24" HorizontalOptions="Center" VerticalOptions="Center">
+        <Label Text="No items" FontSize="18" HorizontalOptions="Center" />
+        <Label Text="There are no orders to display." HorizontalOptions="Center" />
+    </StackLayout>
+</ContentView>

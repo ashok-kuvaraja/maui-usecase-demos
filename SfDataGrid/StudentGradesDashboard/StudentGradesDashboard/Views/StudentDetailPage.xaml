@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StudentGradesDashboard.Views.StudentDetailPage"
+             Title="Student Details"
+             xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+             BackgroundColor="{AppThemeBinding Light={StaticResource Background}, Dark={StaticResource Gray900}}">
+
+    <ContentPage.Resources>
+        <Color x:Key="frameLightThemeColor">#F7F2FB</Color>
+        <Color x:Key="frameDarkThemeColor">#25232A</Color>
+        <Color x:Key="searchBarLightThemeColor">#E7E0EC</Color>
+        <Color x:Key="searchBarDarkThemeColor">#49454F</Color>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="32" Spacing="22" WidthRequest="{OnPlatform WinUI='700',Android='400',iOS='16'}" HorizontalOptions="Center">
+
+            <!-- Elegant Header -->
+            <Label
+                Text="Student Details"
+                FontSize="40"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                Margin="0,4,0,8"
+                TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
+
+            <!-- Card -->
+            <Frame HorizontalOptions="Fill" CornerRadius="18" Padding="{OnPlatform WinUI='24',Android='16',iOS='16'}" HasShadow="True"   BackgroundColor="{AppThemeBinding Light={StaticResource frameLightThemeColor}, Dark={StaticResource frameDarkThemeColor}}" BorderColor="{AppThemeBinding Light={StaticResource Outline}, Dark={StaticResource OutlineVariant}}">
+                <VerticalStackLayout Spacing="12">
+
+                    <!-- Avatar + Basic Info -->
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" VerticalOptions="Center">
+                        <Frame WidthRequest="{OnPlatform WinUI='84',Android='64',iOS='64'}" HeightRequest="{OnPlatform WinUI='84',Android='64',iOS='64'}" CornerRadius="42" BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryContainer}, Dark={StaticResource Primary}}" HasShadow="False" HorizontalOptions="Start" VerticalOptions="Center">
+                            <Label Text="🎓" HorizontalOptions="Center" VerticalOptions="Center" FontSize="36" />
+                        </Frame>
+
+                        <VerticalStackLayout Spacing="4" Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="{Binding Name}" FontSize="20" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource OnSurface}, Dark={StaticResource OnSurface}}" />
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="{Binding StudentClass}" FontSize="13" TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariant}, Dark={StaticResource OnSurfaceVariant}}" />
+                                <Label Text="•" FontSize="13" TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariant}, Dark={StaticResource OnSurfaceVariant}}" />
+                                <Label Text="{Binding Subject}" FontSize="13" TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariant}, Dark={StaticResource OnSurfaceVariant}}" />
+                            </HorizontalStackLayout>
+                            <Label FontSize="13" TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariant}, Dark={StaticResource OnSurfaceVariant}}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Teacher: " />
+                                        <Span Text="{Binding TeacherName}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <BoxView HeightRequest="1" BackgroundColor="{AppThemeBinding Light={StaticResource Outline}, Dark={StaticResource OutlineVariant}}" />
+
+                    <!-- Read-only Details -->
+                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="8">
+                        <Label Text="Student ID" Grid.Row="0" Grid.Column="0" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariant}, Dark={StaticResource OnSurfaceVariant}}" />
+                        <Label Text="{Binding StudentId}" Grid.Row="0" Grid.Column="1" TextColor="{AppThemeBinding Light={StaticResource OnSurface}, Dark={StaticResource OnSurface}}" />
+
+                        <Label Text="Academic Year" Grid.Row="1" Grid.Column="0" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariant}, Dark={StaticResource OnSurfaceVariant}}" />
+                        <Label Text="{Binding AcademicYear}" Grid.Row="1" Grid.Column="1" TextColor="{AppThemeBinding Light={StaticResource OnSurface}, Dark={StaticResource OnSurface}}" />
+                    </Grid>
+
+                    <!-- Editable Fields -->
+                    <VerticalStackLayout Spacing="10" Margin="0,8,0,0">
+
+                        <Label Text="Grade (0-100)" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
+                        <Grid ColumnDefinitions="*,80" ColumnSpacing="12">
+                            <editors:SfNumericEntry Value="{Binding Grade, Mode=TwoWay}" BackgroundColor="{AppThemeBinding Light={StaticResource searchBarLightThemeColor}, Dark={StaticResource searchBarDarkThemeColor}}" HeightRequest="{OnPlatform WinUI='48',Android='44',iOS='48'}" HorizontalOptions="FillAndExpand" />
+                            <Frame Grid.Column="1" CornerRadius="8" BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryContainer}, Dark={StaticResource Gray700}}" Padding="8" HorizontalOptions="Fill" VerticalOptions="Center" WidthRequest="{OnPlatform WinUI='80',Android='72',iOS='76'}">
+                                <Label Text="{Binding Grade, StringFormat='{}{0:N2}'}" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" />
+                            </Frame>
+                        </Grid>
+
+                        <Label Text="Attendance Percentage (0-100)" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
+                        <Grid ColumnDefinitions="*,80" ColumnSpacing="12">
+                            <editors:SfNumericEntry Value="{Binding AttendancePercentage, Mode=TwoWay}" HeightRequest="{OnPlatform WinUI='48',Android='44',iOS='48'}" BackgroundColor="{AppThemeBinding Light={StaticResource searchBarLightThemeColor}, Dark={StaticResource searchBarDarkThemeColor}}" HorizontalOptions="FillAndExpand" />
+                            <Frame Grid.Column="1" CornerRadius="8" BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryContainer}, Dark={StaticResource Gray700}}" Padding="8" HorizontalOptions="Fill" VerticalOptions="Center" WidthRequest="{OnPlatform WinUI='80',Android='72',iOS='76'}">
+                                <Label Text="{Binding AttendancePercentage, StringFormat='{}{0:N0}'}" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" />
+                            </Frame>
+                        </Grid>
+
+                        <Label Text="* Unsaved changes" IsVisible="{Binding IsModified}" TextColor="{StaticResource Error}" FontAttributes="Italic" FontSize="12" />
+
+                        <!-- Action Buttons -->
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="12" Margin="0,8,0,0">
+                            <Button Text="Cancel" BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryContainer}, Dark={StaticResource Gray700}}" Command="{Binding CancelCommand}" BorderColor="{StaticResource Outline}" TextColor="{AppThemeBinding Light={StaticResource OnSurface}, Dark={StaticResource OnSurface}}" CornerRadius="24" HeightRequest="48" WidthRequest="{OnPlatform WinUI='140',Android='120',iOS='120'}" />
+                            <Button Text="Save Changes" Command="{Binding SaveChangesCommand}" BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" CornerRadius="24" HeightRequest="48" WidthRequest="{OnPlatform WinUI='160',Android='140',iOS='140'}" />
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

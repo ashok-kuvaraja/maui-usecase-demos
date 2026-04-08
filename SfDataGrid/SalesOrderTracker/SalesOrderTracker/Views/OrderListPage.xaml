@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+             x:Class="SalesOrderTracker.Views.OrderListPage"
+             x:Name="OrdersPage"
+             Title="Orders"
+             Style="{StaticResource PageBackgroundStyle}">
+
+    <ContentPage.Resources>
+        <OnPlatform x:Key="minimumWidth" x:TypeArguments="x:Double">
+            <On Platform="WinUI,MacCatalyst" Value="450"></On>
+        </OnPlatform>
+        <OnPlatform x:Key="minimumWidthPicker" x:TypeArguments="x:Double">
+            <On Platform="WinUI,MacCatalyst" Value="120"></On>
+            <On Platform="Android,iOS" Value="90"></On>
+        </OnPlatform>
+    </ContentPage.Resources>
+
+    <Grid Padding="16" RowSpacing="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- App header -->
+        <Grid Grid.Row="0" ColumnSpacing="12" Padding="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackLayout Grid.Column="0" Spacing="2">
+                <Label Text="Sales Order Tracker" Style="{StaticResource AppHeaderTitle}" />
+                <Label Text="Manage orders, update status, and monitor progress" Style="{StaticResource AppHeaderSubtitle}" />
+            </StackLayout>
+
+            <Frame Grid.Column="1" Background="{DynamicResource HeaderAccentBrush}" Padding="8" CornerRadius="18" HasShadow="False" VerticalOptions="Center">
+                <Label Text="{Binding Orders.Count, StringFormat='{}{0} Orders'}" TextColor="White" FontAttributes="Bold" />
+            </Frame>
+        </Grid>
+        <!-- Filters row (responsive) -->
+        <Grid Grid.Row="1" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Search area: Entry + icon for consistent rendering on Android -->
+            <Frame Grid.Column="0" Style="{StaticResource CardFrame}" HorizontalOptions="Fill">
+                <Grid ColumnSpacing="8" VerticalOptions="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Entry x:Name="SearchBox" Grid.Column="0" Placeholder="Search Record"
+                           HorizontalOptions="Fill" TextChanged="OnSearchTextChanged" MinimumWidthRequest="{StaticResource minimumWidth}" />
+
+                    <Button Grid.Column="1" Text="🔍" BackgroundColor="Transparent" WidthRequest="56" HeightRequest="36"
+                            VerticalOptions="Center" HorizontalOptions="End" Clicked="OnSearchIconClicked" />
+                </Grid>
+            </Frame>
+
+            <!-- Status filter -->
+            <Frame Grid.Column="1" Style="{StaticResource CardFrame}" VerticalOptions="Center">
+                <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                    <Label Text="Status" VerticalOptions="Center" />
+                    <Picker x:Name="StatusPicker" SelectedIndexChanged="OnStatusFilterChanged" WidthRequest="{StaticResource minimumWidthPicker}" />
+                </HorizontalStackLayout>
+            </Frame>
+        </Grid>
+
+        <!-- Data grid within elevated card -->
+        <Frame Grid.Row="2" Style="{StaticResource CardFrame}" HasShadow="True" BackgroundColor="{DynamicResource SurfaceElevated}">
+            <syncfusion:SfDataGrid x:Name="OrdersGrid" ItemsSource="{Binding Orders}" ColumnWidthMode="Auto"
+                                   VerticalOptions="FillAndExpand" AllowFiltering="True"
+                                   GridLinesVisibility="Both"
+                                   HeaderGridLinesVisibility="Both"
+                                   SelectionMode="Single"                                   
+                                   HeaderRowHeight="48">
+                <syncfusion:SfDataGrid.DefaultStyle>
+                    <syncfusion:DataGridStyle HeaderRowFontAttributes="Bold" HeaderRowTextColor="SandyBrown"/>
+                </syncfusion:SfDataGrid.DefaultStyle>
+            </syncfusion:SfDataGrid>
+        </Frame>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,38 @@
+[
+  {
+    "StudentId": 1,
+    "Name": "Ananya Sharma",
+    "Class": "10A",
+    "Subject": "Mathematics",
+    "Grade": 88.5,
+    "AttendancePercentage": 96,
+    "TeacherName": "Mrs. Priya",
+    "AcademicYear": 2024,
+    "DateCreated": "2024-01-12T08:30:00",
+    "DateModified": "2024-02-01T10:00:00"
+  },
+  {
+    "StudentId": 2,
+    "Name": "Arjun Patel",
+    "Class": "11B",
+    "Subject": "Science",
+    "Grade": 74.25,
+    "AttendancePercentage": 88,
+    "TeacherName": "Dr. Rajesh",
+    "AcademicYear": 2024,
+    "DateCreated": "2024-03-02T09:15:00",
+    "DateModified": "2024-03-05T11:40:00"
+  },
+  {
+    "StudentId": 3,
+    "Name": "Avni Gupta",
+    "Class": "12A",
+    "Subject": "English",
+    "Grade": 92.0,
+    "AttendancePercentage": 99,
+    "TeacherName": "Ms. Deepika",
+    "AcademicYear": 2024,
+    "DateCreated": "2024-02-22T14:20:00",
+    "DateModified": "2024-02-28T16:00:00"
+  }
+]

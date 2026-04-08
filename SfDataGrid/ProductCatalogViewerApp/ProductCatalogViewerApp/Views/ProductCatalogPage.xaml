@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ProductCatalogViewerApp.Views.ProductCatalogPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+    xmlns:dp="clr-namespace:Syncfusion.Maui.DataGrid.DataPager;assembly=Syncfusion.Maui.DataGrid"
+    xmlns:sfPicker="clr-namespace:Syncfusion.Maui.Picker;assembly=Syncfusion.Maui.Picker"
+    xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
+    xmlns:vm="clr-namespace:ProductCatalogViewerApp.ViewModels"
+    xmlns:converters="clr-namespace:ProductCatalogViewerApp.Converters"
+    Title="Product Catalog"
+    >
+
+    <ContentPage.Resources>
+        <converters:InvertBoolConverter x:Key="InvertBool" />
+        <Style x:Key="HeaderLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=#49454F, Dark=#CAC4D0}" />
+        </Style>
+        <Style x:Key="BodyLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=#1C1B1F, Dark=#E7E0EC}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" RowSpacing="0">
+
+        <!-- ── App Bar ───────────────────────────────────────────────────── -->
+        <Grid
+            Grid.Row="0"
+            BackgroundColor="{AppThemeBinding Light=#6750A4, Dark=#D0BCFF}"
+            HeightRequest="56"
+            Padding="16,0">
+            <Label
+                Text="Product Catalog"
+                FontSize="20"
+                FontAttributes="Bold"
+                TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#371E55}"
+                VerticalOptions="Center" />
+
+            <!-- Single theme toggle icon -->
+            <Image Grid.Column="1"
+                   Source="icon_theme.png"
+                            WidthRequest="24"
+                            HeightRequest="24"
+                            Margin="12,0,0,0"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            Aspect="AspectFit"
+                >
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnThemeIconTapped" NumberOfTapsRequired="1"/>
+                </Image.GestureRecognizers>
+            </Image>
+
+        </Grid>
+
+        <!-- ── Search Entry (DataGrid Search) ────────────────────────────── -->
+        <Entry
+            x:Name="SearchEntry"
+            Grid.Row="1"
+            Placeholder="Search products..."
+            MaxLength="255"
+            BackgroundColor="{AppThemeBinding Light=#F7F2FA, Dark=#2D2D31}"
+            TextColor="{AppThemeBinding Light=#1C1B1F, Dark=#E7E0EC}"
+            PlaceholderColor="{AppThemeBinding Light=#49454F, Dark=#CAC4D0}"
+            Margin="16,8"
+            ClearButtonVisibility="WhileEditing"
+            TextChanged="OnSearchEntryTextChanged" />
+
+        <!-- ── Category Filter (SfPicker) ──────────────────────────────── -->
+        <Grid  Grid.Row="2" Margin="16,8,16,8">
+            <sfPicker:SfPicker
+                     x:Name="CategoryPicker"
+                     Mode="Dialog"
+                     PopupWidth="1800"
+                     SelectionChanged="OnCategoryPickerSelectedIndexChanged">
+                <sfPicker:SfPicker.Columns>
+                    <sfPicker:PickerColumn SelectedIndex="0"
+             ItemsSource="{Binding Categories}" />
+                </sfPicker:SfPicker.Columns>
+
+                <sfPicker:SfPicker.SelectionView >
+                    <sfPicker:PickerSelectionView Background="{AppThemeBinding Light=#6750A4, Dark=#D0BCFF}" />
+                </sfPicker:SfPicker.SelectionView>
+            </sfPicker:SfPicker>
+
+            <Button Text="Select Category"
+                    FontAttributes="Bold"
+                    x:Name="pickerButton"
+                    BackgroundColor="{AppThemeBinding Light=#6750A4, Dark=#D0BCFF}"
+                    TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#371E55}"
+                    Clicked="Button_Clicked"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    HeightRequest="50" 
+                    >   
+            </Button>
+        </Grid>
+
+
+        <!-- ── DataPager + DataGrid Container ───────────────────────────── -->
+        <Grid Grid.Row="3" RowDefinitions="*,Auto">
+
+            <!-- DataGrid + Loading/Empty/Error States -->
+            <Grid Grid.Row="0">
+
+                <!-- DataGrid (bound to DataPager's PagedSource) -->
+                <syncfusion:SfDataGrid
+                    x:Name="ProductDataGrid"
+                    ItemsSource="{Binding Source={x:Reference ProductDataPager}, Path=PagedSource}"
+                    AutoGenerateColumnsMode="None"
+                    ColumnWidthMode="Fill"
+                    SortingMode="Single"
+                    SelectionMode="Single"
+                    NavigationMode="Row"
+                    QueryRowHeight="ProductDataGrid_QueryRowHeight"
+                    HeaderRowHeight="48"
+                    EnableDataVirtualization="False"
+                    SelectionChanged="OnDataGridSelectionChanged"
+                    IsVisible="{Binding IsLoading, Converter={x:StaticResource InvertBool}}">
+
+                    <syncfusion:SfDataGrid.DefaultStyle>
+                        <syncfusion:DataGridStyle
+                            SearchHighlightTextColor="{AppThemeBinding Light=#FFFFFF, Dark=#371E55}"
+                            HeaderRowFontAttributes="Bold"
+                            SearchHighlightTextBackground="{AppThemeBinding Light=#6750A4, Dark=#D0BCFF}" />
+                    </syncfusion:SfDataGrid.DefaultStyle>
+
+                    <syncfusion:SfDataGrid.Columns>
+                        <syncfusion:DataGridTextColumn
+                            MappingName="Title"
+                            HeaderText="Name"
+                            ColumnWidthMode="Fill"
+                            AllowSorting="True"
+                            MinimumWidth="150" />
+                        <syncfusion:DataGridTextColumn
+                            MappingName="Category"
+                            HeaderText="Category"
+                            ColumnWidthMode="Fill"
+                            AllowSorting="False"
+                            MinimumWidth="100" />
+                        <syncfusion:DataGridNumericColumn
+                            MappingName="Price"
+                            HeaderText="Price"
+                            ColumnWidthMode="Fill"
+                            AllowSorting="True"
+                            Format="C2"
+                            MinimumWidth="80" />
+                    </syncfusion:SfDataGrid.Columns>
+
+                </syncfusion:SfDataGrid>
+
+                <!-- Loading Indicator (Syncfusion SfBusyIndicator) -->
+                <VerticalStackLayout
+                    IsVisible="{Binding IsLoading}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Spacing="12">
+                    <core:SfBusyIndicator
+                        x:Name="LoadingIndicator"
+                        IsRunning="{Binding IsLoading}"
+                        AnimationType="CircularMaterial"
+                        TextColor="{AppThemeBinding Light=#6750A4, Dark=#D0BCFF}"
+                        WidthRequest="60"
+                        HeightRequest="60" />
+                    <Label
+                        Text="Loading products..."
+                        Style="{StaticResource BodyLabelStyle}"
+                        HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <!-- Empty State -->
+                <VerticalStackLayout
+                    x:Name="EmptyStateLayout"
+                    IsVisible="False"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Spacing="12"
+                    Padding="32">
+                    <Label
+                        Text="📦"
+                        FontSize="48"
+                        HorizontalOptions="Center" />
+                    <Label
+                        x:Name="EmptyStateLabel"
+                        Text="No products found."
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        TextColor="{AppThemeBinding Light=#49454F, Dark=#CAC4D0}"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center" />
+                    <Button
+                        Text="Retry"
+                        Command="{Binding ReloadProductsCommand}"
+                        BackgroundColor="{AppThemeBinding Light=#6750A4, Dark=#D0BCFF}"
+                        TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#371E55}"
+                        CornerRadius="20"
+                        Padding="24,10" />
+                </VerticalStackLayout>
+
+                <!-- Error State -->
+                <Border
+                    x:Name="ErrorFrame"
+                    IsVisible="False"
+                    BackgroundColor="{AppThemeBinding Light=#F9DEDC, Dark=#8C1D18}"
+                    Margin="16"
+                    VerticalOptions="Start"
+                    Padding="16"
+                    StrokeShape="RoundRectangle 8"
+                    Stroke="{AppThemeBinding Light=#B3261E, Dark=#F2B8B5}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label
+                            x:Name="ErrorLabel"
+                            Text=""
+                            TextColor="{AppThemeBinding Light=#410E0B, Dark=#F9DEDC}"
+                            FontSize="14" />
+                        <Button
+                            Text="Retry"
+                            Command="{Binding ReloadProductsCommand}"
+                            BackgroundColor="{AppThemeBinding Light=#B3261E, Dark=#F2B8B5}"
+                            TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#601410}"
+                            CornerRadius="20"
+                            Padding="24,10"
+                            HorizontalOptions="Start" />
+                    </VerticalStackLayout>
+                </Border>
+
+            </Grid>
+
+            <!-- SfDataPager (Row.1) - Handles all paging navigation -->
+            <dp:SfDataPager
+                x:Name="ProductDataPager"
+                Grid.Row="1"
+                Source="{Binding FilteredProducts}"
+                PageSize="15"
+                NumericButtonCount="10"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                BackgroundColor="{AppThemeBinding Light=#F7F2FA, Dark=#2D2D31}"
+                Padding="16,8" />
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

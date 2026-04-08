@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+                xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+             xmlns:converters="clr-namespace:StudentGradesDashboard.Converters"
+             x:Class="StudentGradesDashboard.Views.DashboardPage"
+             Title="Student Grades Dashboard">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:GradeToColorConverter x:Key="GradeToColorConverter" PassingThreshold="50" />
+        </ResourceDictionary>
+        
+         <Style TargetType="syncfusion:DataGridHeaderCell">
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+       
+        <!-- Rounded icon button used for Info and Theme toggle -->
+        <Style x:Key="IconCircleButton" TargetType="Button">
+            <Setter Property="HeightRequest" Value="44" />
+            <Setter Property="WidthRequest" Value="44" />
+            <Setter Property="CornerRadius" Value="22" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontFamily" Value="MauiMaterialAssets" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SurfaceVariant}, Dark={StaticResource Gray700}}"/>
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource OnSurface}, Dark={StaticResource OnSurface}}"/>
+            <Setter Property="Shadow">
+                <Setter.Value>
+                    <Shadow Brush="#000000" Opacity="0.08" Radius="4" Offset="0,2" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Color x:Key="frameLightThemeColor">#F7F2FB</Color> 
+        <Color x:Key="frameDarkThemeColor">#25232A</Color>
+
+        <Color x:Key="searchBarLightThemeColor">#E7E0EC</Color>
+        <Color x:Key="searchBarDarkThemeColor">#49454F</Color>
+        <Color x:Key="white">White</Color>
+        <Color x:Key="black">Black</Color>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="50,Auto,*"  RowSpacing="12">
+        <HorizontalStackLayout HorizontalOptions="End" Grid.Row="0" Spacing="8">
+            <!-- Info and Theme Toggle as bordered Labels (rounded) -->
+            <Border  HeightRequest="44" WidthRequest="44" Stroke="#00000000"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceVariant}, Dark={StaticResource Gray700}}"
+                    HorizontalOptions="End" VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="22" />
+                </Border.StrokeShape>
+                <Label x:Name="InfoButton" FontFamily="MauiMaterialAssets" FontSize="18"
+                       HorizontalOptions="Center" VerticalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource OnSurface}, Dark={StaticResource OnSurface}}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="InfoButton_Clicked" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Border>
+
+            <Border HeightRequest="44" WidthRequest="44" Stroke="#00000000"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceVariant}, Dark={StaticResource Gray700}}"
+                    HorizontalOptions="End" VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="22" />
+                </Border.StrokeShape>
+                <Label x:Name="ThemeToggleButton"  FontFamily="MauiMaterialAssets" FontSize="18"
+                       HorizontalOptions="Center" VerticalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource OnSurface}, Dark={StaticResource OnSurface}}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ThemeToggleButton_Clicked" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Border>
+        </HorizontalStackLayout>
+
+        <Border HeightRequest="55"
+           Margin="{OnPlatform WinUI='-5',MacCatalyst='-5'}"
+           BackgroundColor="{AppThemeBinding Light={StaticResource frameLightThemeColor}, Dark={StaticResource frameDarkThemeColor}}"
+           HorizontalOptions="Fill"
+           Stroke="#2121210A"
+           Grid.Row="1">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0" />
+            </Border.StrokeShape>
+            <StackLayout Orientation="Horizontal" Spacing="8" Padding="0,0,10,6" Margin="0,5,0,0" HorizontalOptions="EndAndExpand" HeightRequest="{OnPlatform Android='65'}" >
+                <Border Padding="{OnPlatform Android='0,6,20,5'}" HorizontalOptions="FillAndExpand" BackgroundColor="{AppThemeBinding Light={StaticResource searchBarLightThemeColor}, Dark={StaticResource searchBarDarkThemeColor}}"  HeightRequest="{OnPlatform WinUI='42',Android='44',iOS='60',MacCatalyst='40'}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="{OnPlatform WinUI='20',MacCatalyst='20', Android='20'}" />
+                    </Border.StrokeShape>
+                    <Grid  HorizontalOptions="Start" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="&#xE715;"
+                               FontFamily="MauiMaterialAssets"
+                                TextColor="{DynamicResource IconColor}"
+                                 FontSize="18"
+                                Padding="15, 4, 0, 4"
+                                VerticalOptions="Center"
+                                Grid.Row="0"
+                                Grid.Column="0">
+                        </Label>
+                        <editors:SfMaskedEntry x:Name="filterText" Value="{Binding FilterTerm, Mode=TwoWay}" BackgroundColor="{AppThemeBinding Light={StaticResource searchBarLightThemeColor}, Dark={StaticResource searchBarDarkThemeColor}}"
+                                                    WidthRequest="{OnPlatform WinUI='283',iOS='260',MacCatalyst='170', Android='125'}" HeightRequest="{OnPlatform WinUI='42',Android='40',iOS='60'}" 
+                                                     ShowBorder="False"  Placeholder="Filter..."
+                                                    HorizontalOptions="Fill" 
+                                                    VerticalOptions="Center"                              
+                                                    IsVisible="true" ClearButtonVisibility="WhileEditing" 
+                                                    Grid.Row="0" Grid.Column="1"/>
+                    </Grid>
+                </Border>
+                <Button Text="Filter" Command="{Binding ApplyFilterCommand}" BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" HeightRequest="48" WidthRequest="{OnPlatform WinUI='100',Android='90',iOS='90'}" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="End" />
+                <!--<Button Text="Clear"  Clicked="ClearFilterButton_Clicked" BackgroundColor="{StaticResource SecondaryContainer}" TextColor="{StaticResource OnSecondaryContainer}" HeightRequest="48" WidthRequest="{OnPlatform WinUI='100',Android='90',iOS='90'}" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="End" />-->
+                <Button Text="Export" Clicked="ShowExportPopup_Clicked" BackgroundColor="{StaticResource TertiaryContainer}" TextColor="{StaticResource OnTertiaryContainer}" HeightRequest="48" WidthRequest="{OnPlatform WinUI='100',Android='90',iOS='90'}" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="End" />
+            </StackLayout>
+        </Border>
+        <syncfusion:SfDataGrid FooterFrozenColumnCount="1"
+            x:Name="dataGrid"
+            Grid.Row="2"
+            ItemsSource="{Binding FilteredStudents}"
+            AutoGenerateColumnsMode="None"
+            SelectionMode="Single"
+           ColumnWidthMode="Fill"
+            HeaderRowHeight="{OnPlatform WinUI='64',Android='48',iOS='56'}"
+            RowHeight="{OnPlatform WinUI='56',Android='48',iOS='52'}" CellTapped="dataGrid_CellTapped"
+            GridLinesVisibility="Horizontal"
+            IsVisible="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}">
+            <syncfusion:SfDataGrid.DefaultStyle>
+                <syncfusion:DataGridStyle RowTextColor="{AppThemeBinding Light={StaticResource black}, Dark={StaticResource white}}" 
+                                          HeaderRowTextColor="{AppThemeBinding Light={StaticResource black}, Dark={StaticResource white}}"  />
+            </syncfusion:SfDataGrid.DefaultStyle>
+            <!-- Column Definitions -->
+            <syncfusion:SfDataGrid.Columns>
+
+                <syncfusion:DataGridNumericColumn 
+                    HeaderText="Student ID" 
+                    MappingName="StudentId"
+                    Format="0"
+                    Width="{OnPlatform WinUI='140',Android='100',iOS='56'}" />
+
+                <syncfusion:DataGridTextColumn 
+                    HeaderText="Name" 
+                    MappingName="Name"
+                   Width="{OnPlatform WinUI='140',Android='100',iOS='56'}" />
+
+                <syncfusion:DataGridTextColumn 
+                    HeaderText="Class" 
+                    MappingName="Class"
+                   Width="{OnPlatform WinUI='140',Android='100',iOS='56'}" />
+
+                <syncfusion:DataGridTextColumn 
+                    HeaderText="Subject" 
+                    MappingName="Subject"
+                    Width="{OnPlatform WinUI='140',Android='100',iOS='56'}" />
+
+                <syncfusion:DataGridTemplateColumn HeaderText="Grade" Width="{OnPlatform WinUI='140',Android='100',iOS='56'}">
+                    <syncfusion:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Grade, StringFormat='{0:0.00}'}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   TextColor="{Binding Grade, Converter={StaticResource GradeToColorConverter}}" />
+                        </DataTemplate>
+                    </syncfusion:DataGridTemplateColumn.CellTemplate>
+                </syncfusion:DataGridTemplateColumn>
+
+                <syncfusion:DataGridNumericColumn 
+                    HeaderText="Attendance %" 
+                    MappingName="AttendancePercentage"
+                    Format="0"
+                    Width="{OnPlatform WinUI='140',Android='100',iOS='56'}" />
+
+                <syncfusion:DataGridTextColumn 
+                    HeaderText="Teacher" 
+                    MappingName="TeacherName"
+                    Width="{OnPlatform WinUI='140',Android='100',iOS='56'}" />
+
+                <syncfusion:DataGridNumericColumn 
+                    HeaderText="Academic Year" 
+                    MappingName="AcademicYear"
+                    Format="0"
+                    Width="{OnPlatform WinUI='140',Android='100',iOS='56'}" />
+                <syncfusion:DataGridTemplateColumn HeaderText="Show Details" Width="{OnPlatform WinUI='160',Android='100',iOS='56'}">
+                    <syncfusion:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label InputTransparent="False" TextColor="{AppThemeBinding Light={StaticResource black}, Dark={StaticResource white}}"
+                                    Text="&#xE700;"
+                                   FontFamily="MauiMaterialAssets"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" 
+                                    WidthRequest="36"
+                                       Margin="0,20,0,0"
+                                    HeightRequest="36"
+                                    BackgroundColor="Transparent"
+                                    FontSize="20">
+                                </Label>
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:DataGridTemplateColumn.CellTemplate>
+                </syncfusion:DataGridTemplateColumn>
+
+            </syncfusion:SfDataGrid.Columns>
+        </syncfusion:SfDataGrid>
+
+        <!-- Export Popup Overlay (covers whole page) -->
+        <Grid x:Name="ExportPopupOverlay" Grid.Row="0" Grid.RowSpan="3" IsVisible="False" InputTransparent="False">
+            <!-- Dim background to focus on popup (simulated blur) -->
+            <BoxView Color="#000000" Opacity="0.60" />
+
+            <!-- Popup card -->
+                     <Frame x:Name="ExportPopupCard" HasShadow="True" CornerRadius="18" Padding="20" BackgroundColor="{AppThemeBinding Light={StaticResource Surface}, Dark={StaticResource Gray800}}"
+                         HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="{OnPlatform WinUI='360',Android='320',iOS='320'}">
+                <VerticalStackLayout Spacing="18" HorizontalOptions="Center">
+                    <Label Text="Export data as" FontAttributes="Bold" FontSize="16" HorizontalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource OnSurface}, Dark={StaticResource OnSurface}}" />
+
+                    <HorizontalStackLayout Spacing="14" HorizontalOptions="Center">
+                        <Button Text="PDF" Clicked="ExportPdf_Clicked" HeightRequest="44" CornerRadius="22"  WidthRequest="{OnPlatform WinUI='140',Android='120'}"
+                                BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" FontAttributes="Bold" />
+
+                        <Button Text="Excel" Clicked="ExportExcel_Clicked"  WidthRequest="{OnPlatform WinUI='140',Android='120'}" HeightRequest="44" CornerRadius="22"
+                                BackgroundColor="{StaticResource SecondaryContainer}" TextColor="{StaticResource OnSecondaryContainer}" FontAttributes="Bold" />
+                    </HorizontalStackLayout>
+
+                    <Button Text="Cancel" Clicked="CancelExportPopup_Clicked" HorizontalOptions="Center" WidthRequest="260" HeightRequest="40" CornerRadius="20"
+                            BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariant}, Dark={StaticResource OnSurfaceVariant}}" />
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+    </Grid>
+
+</ContentPage>
